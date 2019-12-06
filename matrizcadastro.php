@@ -1,0 +1,502 @@
+<?php
+// We need to use sessions, so you should always start sessions using the below code.
+session_start();
+// If the user is not logged in redirect to the login page...
+if (!isset($_SESSION['loggedin'])) {
+	header('Location: index.php');
+	exit();
+}
+?>
+<style>
+ .table-hover{
+  font-size: 13px;
+}
+ </style>
+<style>
+/* width */
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: black; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #BDBDBD; 
+}
+
+
+.responsive {
+  max-width: 70%;
+  height: auto;
+}
+
+</style>
+
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="utf-8">
+	
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+
+ 
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+	<head>
+	<body>
+	<style>
+.responsive {
+  width: 70%;
+  height: auto;
+}
+</style>
+
+ <div class="header">
+  <img alt="" src="/Imgs/banerf.png" class="responsive"  />
+  
+</div>
+<div class="navbar">
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="index.php">CCS</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+       <li><a href="home2.php?">Home</a></li>
+        <li><a href="inicial.php">Clientes</a></li>
+        <li><a href="index.php?p=cadastrar">Novo Cadastro</a></li>
+      
+        <li><a href="matriz.php">Matriz</a></li>
+         <li><a href="cadastrojustificativa.php">Justificativa de ponto</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="logout.php"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+  </div>
+
+<title>CCS - Novo Cadastro (Demanda)</title>
+<?php
+
+	include("classe/conexao.php");
+	
+
+	if(isset($_POST['confirmar'])){
+
+		// 1 - Registro dos dados
+
+		if(!isset($_SESSION))
+			
+
+		foreach($_POST as $chave=>$valor)
+			$_SESSION[$chave] = $mysqli->real_escape_string($valor);
+
+		// 2 - Validação dos dados
+		
+		// 3 - Inserção no Banco e redirecionamento
+		if(count($erro) == 0){
+
+			$sql_code = "INSERT INTO demandas(
+				demandacr,
+				criador,
+				datademanda,				
+				sistemademanda,
+				clientedemanda,
+				ndemanda,
+				statusdemanda,				
+				descdemanda 
+				)
+				VALUES(
+				'$_SESSION[demandacr]',
+				'$_SESSION[criador]',
+				'$_SESSION[datademanda]',			
+				'$_SESSION[sistemademanda]',
+				'$_SESSION[clientedemanda]',
+				'$_SESSION[ndemanda]',
+				'$_SESSION[statusdemanda]',				
+				'$_SESSION[descdemanda]'	
+				)";
+			$confirma = $mysqli->query($sql_code) or die($mysqli->error);
+				
+		
+		
+		
+		
+
+			if($confirma){
+
+				unset($_SESSION[demandacr],
+				$_SESSION[criador],
+				$_SESSION[clientedemanda],
+				$_SESSION[datademanda],				
+				$_SESSION[sistemademanda],
+				$_SESSION[ndemanda],
+				$_SESSION[statusdemanda],			
+				$_SESSION[descdemanda]
+				);
+
+				echo "<script> location.href='matriz.php'; </script>";
+
+			}else
+				$erro[] = $confirma;
+
+		}
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+?>
+
+<style>
+
+
+* {
+  box-sizing: border-box;
+}
+
+.row {
+  display: -ms-flexbox; /* IE10 */
+  display: flex;
+  -ms-flex-wrap: wrap; /* IE10 */
+  flex-wrap: wrap;
+  margin: 0 -16px;
+}
+
+.col-25 {
+  -ms-flex: 25%; /* IE10 */
+  flex: 25%;
+}
+
+.col-50 {
+  -ms-flex: 50%; /* IE10 */
+  flex: 50%;
+}
+
+.col-75 {
+  -ms-flex: 75%; /* IE10 */
+  flex: 75%;
+}
+
+.col-25,
+.col-50,
+.col-75 {
+  padding: 0 16px;
+}
+
+.container {
+  background-color: #f2f2f2;
+  padding: 5px 20px 15px 20px;
+  border: 1px solid lightgrey;
+  border-radius: 3px;
+}
+
+input[type=text] {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+label {
+  margin-bottom: 10px;
+  display: block;
+}
+
+.icon-container {
+  margin-bottom: 20px;
+  padding: 7px 0;
+  font-size: 24px;
+}
+
+.btn {
+  background-color: #848484;
+  color: white;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  width: 20%;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 17px;
+}
+
+.btn:hover {
+  background-color: #2196F3;
+}
+
+a {
+  color: #2196F3;
+}
+
+hr {
+  border: 1px solid lightgrey;
+}
+
+span.price {
+  float: right;
+  color: grey;
+}
+
+/* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other (also change the direction - make the "cart" column go on top) */
+@media (max-width: 800px) {
+  .row {
+    flex-direction: column-reverse;
+  }
+  .col-25 {
+    margin-bottom: 20px;
+  }
+}
+/* The container */
+.container2 {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container2 input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+input[type=text], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    resize: vertical;
+}
+</style>
+
+
+
+
+
+
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+
+<?php 
+if(count($erro) > 0){ 
+	echo "<div class='erro'>"; 
+	foreach($erro as $valor) 
+		echo "$valor <br>"; 
+
+	echo "</div>"; 
+}
+?>
+      
+<div class="row">
+  <div class="col-75">
+    <div class="container">
+      <form action="matrizcadastro.php" method="POST">
+      
+        <div class="row">
+          <div class="col-50">
+            <h3>Nova Demanda</h3>
+            </br>
+             <label for="datademanda"><i class="fa fa-exclamation-triangle"></i> Data de demanda</label>
+                <input name="datademanda" value="<?php echo $_SESSION[datademanda]; ?>" required  type="date">
+    
+    		</br>
+    		</br>
+    		
+    	
+    		
+             <label for="ndemanda"><i class="fa fa-home"></i> Numero Demanda</label>
+             <input required name="ndemanda" value="<?php echo $_SESSION[ndemanda]; ?>" required placeholder=" Número de demanda" type="text">
+             
+            <br/>
+           
+           
+           
+           
+           <?php
+
+	include("classe/conexao.php");
+
+		$sql_code = "SELECT * FROM usuario where nome is not null order by nome";
+	$sql_query = $mysqli->query($sql_code) or die($mysqli->error);
+	$linha = $sql_query->fetch_assoc();
+	
+	
+	
+	?>
+	
+	
+	 <label for="clientedemanda"><i class="fa fa-address-book-o"></i> Cliente</label>
+	 <select required name="clientedemanda">
+		    <option value="">Selecione</option>
+		    
+		   <?php  while($linha = $sql_query->fetch_assoc()){ ?>
+		 <option value="<?php echo $linha['nome']; ?>"><?php echo $linha['nome']; ?> </option> <?php
+									} ?>
+		 
+		 
+        	</select>
+        	
+        	<label for="demandacr"><i class="fa fa-align-left"></i> Criticidade Demanda</label>
+             <select required required name="demandacr">
+	    	<option value="">Selecione</option>
+		        <option value="1" <?php if($_SESSION[demandacr] == 1) echo "selected"; ?>>Indefinido</option>
+	    		<option value="0" <?php if($_SESSION[demandacr] == 0) echo "selected"; ?>>Ok</option>
+	    		<option value="2" <?php if($_SESSION[demandacr] == 2) echo "selected"; ?>>Alerta</option>
+	    		<option value="3" <?php if($_SESSION[demandacr] == 3) echo "selected"; ?>>Critica</option>
+        	</select>
+           
+           
+           
+             <label for="criador"><i class="fa fa-bell-o"></i> Criador </label>
+                <select name="criador">
+	            
+	            	    <option value="0" <?php if($_SESSION[criador] == 0) echo "selected"; ?>>Selecione</option>
+	            	    <option value="1" <?php if($_SESSION[criador] == 1) echo "selected"; ?>>Indefinido</option>
+	            	    <option value="2" <?php if($_SESSION[criador] == 2) echo "selected"; ?>>Rafael</option>
+		            <option value="3" <?php if($_SESSION[criador] == 3) echo "selected"; ?>>Karina</option>
+		            <option value="4" <?php if($_SESSION[criador] == 4) echo "selected"; ?>>Wesley</option>
+		            <option value="5" <?php if($_SESSION[criador] == 5) echo "selected"; ?>>Evelyn</option>
+		            <option value="6" <?php if($_SESSION[criador] == 6) echo "selected"; ?>>Lorraynne</option>	
+		            <option value="7" <?php if($_SESSION[criador] == 7) echo "selected"; ?>>Nayara</option>	
+		             <option value="8" <?php if($_SESSION[criador] == 8) echo "selected"; ?>>Regina</option>
+        	</select>
+           
+             
+              <br/>
+               <br/>
+            
+           
+              
+            <div class="row">
+              <div class="col-50">
+              </div>
+              <div class="col-50">                 
+              </div>
+            </div>
+          </div>
+
+          <div class="col-50">
+            <h3>- </h3>
+            
+             <label for="sistemademanda"><i class="fa fa-align-left"></i> Sistema </label>
+             <select required required name="sistemademanda">
+	    	<option value="">Selecione</option>
+		        <option value="0" <?php if($_SESSION[sistemademanda] == 0) echo "selected"; ?>>Indefinido</option>
+	    		<option value="1" <?php if($_SESSION[sistemademanda] == 1) echo "selected"; ?>>AC Pessoal</option>
+	    		<option value="2" <?php if($_SESSION[sistemademanda] == 2) echo "selected"; ?>>AC Fiscal</option>
+	    		<option value="3" <?php if($_SESSION[sistemademanda] == 3) echo "selected"; ?>>AC Contábil</option>
+	    		<option value="4" <?php if($_SESSION[sistemademanda] == 4) echo "selected"; ?>>Conecta</option>
+	    		<option value="5" <?php if($_SESSION[sistemademanda] == 5) echo "selected"; ?>>Doc</option>
+	    		<option value="6" <?php if($_SESSION[sistemademanda] == 6) echo "selected"; ?>>Gestão</option>
+	    		<option value="7" <?php if($_SESSION[sistemademanda] == 7) echo "selected"; ?>>Pátrio</option>
+	    		<option value="8" <?php if($_SESSION[sistemademanda] == 8) echo "selected"; ?>>Gestão</option>
+	    		<option value="9" <?php if($_SESSION[sistemademanda] == 9) echo "selected"; ?>>RH</option>
+	    		<option value="10" <?php if($_SESSION[sistemademanda] == 10) echo "selected"; ?>>AG Financeiro</option>
+	    		<option value="11" <?php if($_SESSION[sistemademanda] == 11) echo "selected"; ?>>AG Compras e Estoque</option>
+	    		<option value="12" <?php if($_SESSION[sistemademanda] == 12) echo "selected"; ?>>Ponto</option>
+	    		
+        	</select>
+            
+            
+            
+            
+            
+        	   
+                     
+            <br/>
+            <label for="statusdemanda"><i statusdemanda="fa fa-child"></i> Status da demanda</label>
+            <select  required required name="statusdemanda">
+	    	<option value="">Selecione</option>
+		    <option value="0" <?php if($_SESSION[statusdemanda] == 0) echo "selected"; ?>>Indefinido</option>
+	    	<option value="2" <?php if($_SESSION[statusdemanda] == 2) echo "selected"; ?>>Em Aberto</option>
+	    	<option value="3" <?php if($_SESSION[statusdemanda] == 3) echo "selected"; ?>>Finalizado</option>
+        	</select>
+           
+          <label for="descdemanda"><i class="fa fa-align-left"></i> Descrição da demanda</label>
+            <textarea  required name="descdemanda" placeholder="Descreva a demanda ..."  style="height:200px;"></textarea>
+            
+           
+            <div class="row">
+              <div class="col-50">
+                
+              </div>
+              <div class="col-50">
+                
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <label>
+       
+        </label>
+        <input value="Salvar" class="btn" name="confirmar" type="submit">
+      </form>
+      <form action="matriz.php" method="POST">
+      <input value="Cancelar" class="btn" name="confirmar" type="submit">
+      
+      </form>
+    </div>
+  </div>
+ 
+</div>
+
+</body>
+</html>
